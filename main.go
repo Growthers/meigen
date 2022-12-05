@@ -18,4 +18,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	if err := md.AddMeigen(ctx, "author", "text"); err != nil {
+		log.Fatal(err)
+	}
 }
