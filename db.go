@@ -61,7 +61,7 @@ func (db *DB) AddMeigen(ctx context.Context, a string, t string) (err error) {
 	collection := db.client.Database(DB_NAME).Collection(COLLECTION_NAME)
 	m := Meigen{}
 
-	m.ID = db.countMeigen(ctx) + 1
+	m.ID = db.CountMeigen(ctx) + 1
 	m.Author = a
 	m.Text = t
 
@@ -72,7 +72,7 @@ func (db *DB) AddMeigen(ctx context.Context, a string, t string) (err error) {
 	return nil
 }
 
-func (db *DB) countMeigen(ctx context.Context) int {
+func (db *DB) CountMeigen(ctx context.Context) int {
 	DB_NAME := os.Getenv("DB_NAME")
 	COLLECTION_NAME := os.Getenv("DB_COLLECTION_NAME")
 	collection := db.client.Database(DB_NAME).Collection(COLLECTION_NAME)
