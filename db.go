@@ -3,12 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
-	"os"
 )
 
 type DB struct {
@@ -78,4 +79,24 @@ func (db *DB) CountMeigen(ctx context.Context) int {
 	collection := db.client.Database(DB_NAME).Collection(COLLECTION_NAME)
 	count, _ := collection.CountDocuments(ctx, bson.D{})
 	return int(count)
+}
+
+func (db *DB) SearchMeigenFromAuthor(ctx context.Context, a string) (result []Meigen, err error) {
+	DB_NAME := os.Getenv("DB_NAME")
+	COLLECTION_NAME := os.Getenv("DB_COLLECTION_NAME")
+	collection := db.client.Database(DB_NAME).Collection(COLLECTION_NAME)
+	cursor, err := collection.Find(ctx, bson.D{{"author", a}})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var m Meigen
+		if err = cursor.Decode(&m); err != nil {
+			return nil, err
+		}
+		result = append(result, m)
+	}
+	return result, nil
 }

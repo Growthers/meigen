@@ -21,4 +21,10 @@ func main() {
 	if err := md.AddMeigen(ctx, "author", "text"); err != nil {
 		log.Fatal(err)
 	}
+
+	result, err := md.SearchMeigenFromAuthor(ctx, "author")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(result)
 }
