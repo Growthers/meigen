@@ -81,6 +81,8 @@ func (db *DB) CountMeigen(ctx context.Context) int {
 	return int(count)
 }
 
+// TextとAuthor似すぎ、まとめられないかな
+
 func (db *DB) SearchMeigenFromAuthor(ctx context.Context, a string) (result []Meigen, err error) {
 	DB_NAME := os.Getenv("DB_NAME")
 	COLLECTION_NAME := os.Getenv("DB_COLLECTION_NAME")

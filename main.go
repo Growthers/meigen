@@ -22,9 +22,24 @@ func main() {
 		log.Fatal(err)
 	}
 
-	result, err := md.SearchMeigenFromAuthor(ctx, "author")
+	mfi, err := md.SearchMeigenFromID(ctx, 1)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(result)
+	log.Println(mfi)
+
+	mfa, err := md.SearchMeigenFromAuthor(ctx, "author")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(mfa)
+
+	mft, err := md.SearchMeigenFromText(ctx, "text")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(mft)
+
+	log.Println(md.CountMeigen(ctx))
+
 }
