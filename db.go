@@ -100,3 +100,23 @@ func (db *DB) SearchMeigenFromAuthor(ctx context.Context, a string) (result []Me
 	}
 	return result, nil
 }
+
+func (db *DB) SearchMeigenFromText(ctx context.Context, t string) (result []Meigen, err error) {
+	DB_NAME := os.Getenv("DB_NAME")
+	COLLECTION_NAME := os.Getenv("DB_COLLECTION_NAME")
+	collection := db.client.Database(DB_NAME).Collection(COLLECTION_NAME)
+	cursor, err := collection.Find(ctx, bson.D{{"text", t}})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var m Meigen
+		if err = cursor.Decode(&m); err != nil {
+			return nil, err
+		}
+		result = append(result, m)
+	}
+	return result, nil
+}
