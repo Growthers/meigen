@@ -120,3 +120,13 @@ func (db *DB) SearchMeigenFromText(ctx context.Context, t string) (result []Meig
 	}
 	return result, nil
 }
+
+func (db *DB) SearchMeigenFromID(ctx context.Context, id int) (result Meigen, err error) {
+	DB_NAME := os.Getenv("DB_NAME")
+	COLLECTION_NAME := os.Getenv("DB_COLLECTION_NAME")
+	collection := db.client.Database(DB_NAME).Collection(COLLECTION_NAME)
+	if err = collection.FindOne(ctx, bson.D{{"id", id}}).Decode(&result); err != nil {
+		return Meigen{}, err
+	}
+	return result, nil
+}
